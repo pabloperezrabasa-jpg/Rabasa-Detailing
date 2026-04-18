@@ -1055,6 +1055,37 @@ function guardarTodo() {
   setTimeout(function() { ok.classList.remove("vis"); }, 2500);
 }
 
+/* ============================================================
+   ACCESO ADMIN — 5 TAPS EN EL LOGO
+   ============================================================ */
+var tapCount = 0, tapTimer = null;
+document.getElementById("logoTap").addEventListener("click", function() {
+  tapCount++;
+  clearTimeout(tapTimer);
+  if (tapCount >= 5) { tapCount = 0; abrirPin(); }
+  else { tapTimer = setTimeout(function() { tapCount = 0; }, 2000); }
+});
+
+var pinInput = "";
+
+function abrirPin() {
+  pinInput = "";
+  actualizarDots();
+  document.getElementById("pinErr").classList.remove("vis");
+  document.getElementById("pinWrap").classList.add("vis");
+}
+
+function cerrarPin() {
+  pinInput = "";
+  document.getElementById("pinWrap").classList.remove("vis");
+}
+
+function actualizarDots() {
+  for (var i = 0; i < 4; i++) {
+    document.getElementById("pd" + i).classList.toggle("on", i < pinInput.length);
+  }
+}
+
 function pinTecla(k) {
   if (k === "C")   { pinInput = ""; actualizarDots(); document.getElementById("pinErr").classList.remove("vis"); return; }
   if (k === "DEL") { pinInput = pinInput.slice(0, -1); actualizarDots(); return; }
